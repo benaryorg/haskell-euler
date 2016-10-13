@@ -46,6 +46,7 @@ functionList =
 		, (2,return $ show $ sum $ filter odd $ takeWhile (<= 4000000) fibonacci)
 		, (3,return $ show $ last $ primeFactor 600851475143)
 		, (4,return $ show $ maximum $ filter isPalindromDec $ concat $ [[i*j|i <- [999,998..100]]|j <- [999,998..100]])
+		, (5,return $ show $ head $ filter (divisibleBy all [2..20]) $ [(lcm 19 20),((lcm 19 20)*2)..])
 	]
 
 main :: IO ()
