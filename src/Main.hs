@@ -48,6 +48,8 @@ functionList =
 		, (4,return $ show $ maximum $ filter isPalindromDec $ concat $ [[i*j|i <- [999,998..100]]|j <- [999,998..100]])
 		, (5,return $ show $ head $ filter (divisibleBy all [2..20]) $ [(lcm 19 20),((lcm 19 20)*2)..])
 		, (6,return $ show $ (let s=(sum [1..100]) in s*s)-(sum [i*i|i <- [1..100]]))
+		-- TODO
+		, (30,return $ show $ sum $ filter (\x -> x == (sum $ map (^5) $ digitsDec x)) [2..(354294*2)])
 	]
 
 main :: IO ()
