@@ -57,6 +57,7 @@ functionList =
 		, (6,return $ show $ (let s=(sum [1..100]) in s*s)-(sum [i*i|i <- [1..100]]))
 		, (7,return $ show $ primes!!10001)
 		, (8,(liftM (show . maximum . map (foldl (*) 1) . divvy 13 1 . map (read . ((flip (:)) [])) . filter (\x -> (x >= '0') && (x <= '9')))) $ readFile "res/8.txt")
+		, (9,return $ show $ head $ head $ filter (not . null) $ concat $ concat $ concat $ [[[[[a*b*c|a^2+b^2 == c^2]|a+b+c == 1000]|a <- [1..1000]]|b <- [1..1000]]|c <- [1..1000]])
 		-- TODO
 		, (30,return $ show $ sum $ filter (\x -> x == (sum $ map (^5) $ digitsDec x)) [2..(354294*2)])
 	]
