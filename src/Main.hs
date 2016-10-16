@@ -3,13 +3,11 @@ module Main where
 import Control.Monad
 import Data.List
 import Data.List.Split
+import Math.NumberTheory.Primes.Sieve
 import System.Environment
 
 fibonacci :: Integral a => [a]
 fibonacci = unfoldr (\(x,y) -> Just (x,(y,x+y))) (1,1)
-
-primes :: Integral a => [a]
-primes = filter isPrime (2:[3,5..])
 
 isPrime :: Integral a => a -> Bool
 isPrime = (==1) . length . primeFactor
