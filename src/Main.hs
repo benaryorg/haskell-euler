@@ -154,6 +154,14 @@ functionList =
 		, (30,Plain $
 			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
 		)
+		-- TODO
+		, (67,File "res/67.txt" $
+			let
+				matrix = reverse . map (map (read :: String -> Integer) . words) . lines
+				merge long short = zipWith (\[x,y] a -> a + (max x y)) (divvy 2 1 long) short
+			in
+				(\input -> head $ foldl merge (head $ matrix input) (tail $ matrix input))
+		)
 	]
 
 run :: Function -> IO ()
