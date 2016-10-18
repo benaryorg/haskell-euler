@@ -1,6 +1,7 @@
 module Main where
 
 import Control.Monad
+import Data.Function.Memoize
 import Data.List
 import Data.List.Split
 import Data.Function
@@ -17,6 +18,16 @@ collatz n = n:collatz next
 	where next
 		| even n = n `div` 2
 		| odd n = 3*n+1
+
+lattice :: (Integer,Integer) -> Integer
+lattice = (+1) . (`div` 2) . memoFix lat
+	where
+		lat :: ((Integer,Integer) -> Integer) -> (Integer,Integer) -> Integer
+		lat self (x,0) = 0
+		lat self (0,y) = 0
+		lat self (x,y) = 2+self (norm (x-1,y))+self (norm (x,y-1))
+		norm :: (Integer,Integer) -> (Integer,Integer)
+		norm (a,b) = (min a b,max a b)
 
 triangleNumbers :: Integral a => [a]
 triangleNumbers = unfoldr (\(x,y) -> Just (x,(x+y,y+1))) (1,2)
@@ -124,6 +135,9 @@ functionList =
 		)
 		, (14,Plain $
 			maximumBy (on compare (length . collatz)) $ [1..999999]
+		)
+		, (15,Plain $
+			lattice (20,20)
 		)
 		-- TODO
 		, (30,Plain $
