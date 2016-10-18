@@ -100,7 +100,6 @@ functionList =
 		, (30,Plain $
 			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
 		)
---}
 	]
 
 run :: Function -> IO ()
