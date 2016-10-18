@@ -65,6 +65,7 @@ functionList =
 		, (10,return $ show $ sum $ takeWhile (<2000000) primes)
 		-- TODO
 		, (12,return $ show $ head $ filter ((>=500) . length . factor) triangleNumbers)
+		, (13,(liftM (map (head . show) . take 10 . reverse . digitsDec . sum . map (read :: String -> Integer) . lines)) $ readFile "res/13.txt")
 		-- TODO
 		, (30,return $ show $ sum $ filter (\x -> x == (sum $ map (^5) $ digitsDec x)) [2..(354294*2)])
 	]
