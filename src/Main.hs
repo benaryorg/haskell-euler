@@ -89,6 +89,25 @@ functionList =
 		, (10,Plain $
 			sum $ takeWhile (<2000000) primes
 		)
+		, (11,File "res/11.txt" $
+			\input ->
+				let
+					matrix = chunksOf 20 $ map read $ words input
+					mlen = length matrix
+					horizontal = maximum . map (maximum . map (foldl (*) 1) . divvy 4 1)
+					baseindices = concat [[(0,i),(i,0)]|i <- [0..(mlen-1)]]
+					diagonalindices = map (\(x,y) -> filter (\(x,y) -> x < 20 && y < 20) $ [(x+i,y+i)|i <- [0..(mlen-1)]]) baseindices :: [[(Int,Int)]]
+					diagonalvalues = \m -> map (map (\(x,y) -> (m!!y)!!x)) diagonalindices
+					diagonal = maximum . map (foldl (*) 1) . concat . map (divvy 4 1) . diagonalvalues
+				in
+					maximum
+						[
+							horizontal matrix,
+							horizontal $ transpose matrix,
+							diagonal matrix,
+							diagonal $ reverse matrix
+						]
+		)
 		-- TODO
 		, (12,Plain $
 			head . filter ((>=500) . length . factor) $ triangleNumbers
