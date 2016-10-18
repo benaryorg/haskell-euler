@@ -139,6 +139,9 @@ functionList =
 		, (15,Plain $
 			lattice (20,20)
 		)
+		, (16,Plain $
+			sum . digitsDec $ 2^1000
+		)
 		-- TODO
 		, (30,Plain $
 			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
