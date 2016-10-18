@@ -3,12 +3,20 @@ module Main where
 import Control.Monad
 import Data.List
 import Data.List.Split
+import Data.Function
 import Math.NumberTheory.Primes.Sieve
 import System.Environment
 
 data Function = Plain (Integer)
 	| File String (String -> Integer)
 	| Text String
+
+collatz :: Integral a => a -> [a]
+collatz 1 = [1]
+collatz n = n:collatz next
+	where next
+		| even n = n `div` 2
+		| odd n = 3*n+1
 
 triangleNumbers :: Integral a => [a]
 triangleNumbers = unfoldr (\(x,y) -> Just (x,(x+y,y+1))) (1,2)
@@ -113,6 +121,9 @@ functionList =
 		)
 		, (13,File "res/13.txt" $
 			read . map (head . show) . take 10 . reverse . digitsDec . sum . map (read :: String -> Integer) . lines
+		)
+		, (14,Plain $
+			maximumBy (on compare (length . collatz)) $ [1..999999]
 		)
 		-- TODO
 		, (30,Plain $
