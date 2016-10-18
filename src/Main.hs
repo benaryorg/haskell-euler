@@ -6,6 +6,9 @@ import Data.List.Split
 import Math.NumberTheory.Primes.Sieve
 import System.Environment
 
+triangleNumbers :: Integral a => [a]
+triangleNumbers = unfoldr (\(x,y) -> Just (x,(x+y,y+1))) (1,2)
+
 fibonacci :: Integral a => [a]
 fibonacci = unfoldr (\(x,y) -> Just (x,(y,x+y))) (1,1)
 
@@ -16,6 +19,9 @@ primeFactor :: Integral a => a -> [a]
 primeFactor 1 = []
 primeFactor x = f:(primeFactor (x `div` f))
 	where f = head $ filter ((==0) . mod x) $ (2:[3,5..])
+
+factor :: Integral a => a -> [a]
+factor n = nub $ concatMap (\x -> [div n x,x]) $ filter ((==0) . mod n) $ takeWhile ((<=n) . (^2)) [1..]
 
 isPalindrom :: Integral a => a -> a -> Bool
 isPalindrom base number = (take len dig) == (take len (reverse dig))
@@ -57,6 +63,8 @@ functionList =
 		, (8,(liftM (show . maximum . map (foldl (*) 1) . divvy 13 1 . map (read . ((flip (:)) [])) . filter (\x -> (x >= '0') && (x <= '9')))) $ readFile "res/8.txt")
 		, (9,return $ show $ head $ head $ filter (not . null) $ concat $ concat $ concat $ [[[[[a*b*c|a^2+b^2 == c^2]|a+b+c == 1000]|a <- [1..1000]]|b <- [1..1000]]|c <- [1..1000]])
 		, (10,return $ show $ sum $ takeWhile (<2000000) primes)
+		-- TODO
+		, (12,return $ show $ head $ filter ((>=500) . length . factor) triangleNumbers)
 		-- TODO
 		, (30,return $ show $ sum $ filter (\x -> x == (sum $ map (^5) $ digitsDec x)) [2..(354294*2)])
 	]
