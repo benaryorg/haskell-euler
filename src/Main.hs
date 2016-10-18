@@ -108,7 +108,6 @@ functionList =
 							diagonal $ reverse matrix
 						]
 		)
-		-- TODO
 		, (12,Plain $
 			head . filter ((>=500) . length . factor) $ triangleNumbers
 		)
