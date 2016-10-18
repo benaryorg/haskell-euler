@@ -60,19 +60,19 @@ functionList =
 		  "Meow."
 		)
 		, (1, Plain $
-			sum $ filter (divisibleBy any [3,5]) [1..999]
+			sum . filter (divisibleBy any [3,5]) $ [1..999]
 		)
 		, (2,Plain $
-			sum $ filter odd $ takeWhile (<= 4000000) fibonacci
+			sum . filter odd . takeWhile (<= 4000000) $ fibonacci
 		)
 		, (3,Plain $
 			last $ primeFactor 600851475143
 		)
 		, (4,Plain $
-			maximum $ filter isPalindromDec $ concat $ [[i*j|i <- [999,998..100]]|j <- [999,998..100]]
+			maximum . filter isPalindromDec . concat $ [[i*j|i <- [999,998..100]]|j <- [999,998..100]]
 		)
 		, (5,Plain $
-			head $ filter (divisibleBy all [2..20]) $ [(lcm 19 20),((lcm 19 20)*2)..]
+			head . filter (divisibleBy all [2..20]) $ [(lcm 19 20),((lcm 19 20)*2)..]
 		)
 		, (6,Plain $
 			((sum [1..100])^2)-(sum [i*i|i <- [1..100]])
@@ -84,21 +84,21 @@ functionList =
 			maximum . map (foldl (*) 1) . divvy 13 1 . map (read . ((flip (:)) [])) . filter (\x -> (x >= '0') && (x <= '9'))
 		)
 		, (9,Plain $
-			head $ head $ filter (not . null) $ concat $ concat $ concat $ [[[[[a*b*c|a^2+b^2 == c^2]|a+b+c == 1000]|a <- [1..1000]]|b <- [1..1000]]|c <- [1..1000]]
+			head . head . filter (not . null) . concat . concat . concat $ [[[[[a*b*c|a^2+b^2 == c^2]|a+b+c == 1000]|a <- [1..1000]]|b <- [1..1000]]|c <- [1..1000]]
 		)
 		, (10,Plain $
 			sum $ takeWhile (<2000000) primes
 		)
 		-- TODO
 		, (12,Plain $
-			head $ filter ((>=500) . length . factor) triangleNumbers
+			head . filter ((>=500) . length . factor) $ triangleNumbers
 		)
 		, (13,File "res/13.txt" $
 			read . map (head . show) . take 10 . reverse . digitsDec . sum . map (read :: String -> Integer) . lines
 		)
 		-- TODO
 		, (30,Plain $
-			sum $ filter (\x -> x == (sum $ map (^5) $ digitsDec x)) [2..(354294*2)]
+			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
 		)
 --}
 	]
