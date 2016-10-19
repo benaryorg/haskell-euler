@@ -173,6 +173,9 @@ functionList =
 			in
 				fromIntegral . length . filter (\(_,_,day) -> day == 1) . map head . chunksOf 7 . drop (daystofirst `mod` 7) $ targetspan
 		)
+		, (20,Plain $
+			sum . digitsDec . product $ [1..100]
+		)
 		-- TODO
 		, (30,Plain $
 			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
