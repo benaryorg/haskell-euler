@@ -12,6 +12,22 @@ data Function = Plain (Integer)
 	| File String (String -> Integer)
 	| Text String
 
+daysInMonth :: Integral a => a -> a -> a
+daysInMonth _ 0 = 31
+daysInMonth year 1
+	| year `mod` 400 == 0 || (year `mod` 4 == 0 && year `mod` 100 /= 0) = 29
+	| otherwise = 28
+daysInMonth _ 2 = 31
+daysInMonth _ 3 = 30
+daysInMonth _ 4 = 31
+daysInMonth _ 5 = 30
+daysInMonth _ 6 = 31
+daysInMonth _ 7 = 31
+daysInMonth _ 8 = 30
+daysInMonth _ 9 = 31
+daysInMonth _ 10 = 30
+daysInMonth _ 11 = 31
+
 collatz :: Integral a => a -> [a]
 collatz 1 = [1]
 collatz n = n:collatz next
@@ -149,6 +165,13 @@ functionList =
 				merge long short = zipWith (\[x,y] a -> a + (max x y)) (divvy 2 1 long) short
 			in
 				(\input -> head $ foldl merge (head $ matrix input) (tail $ matrix input))
+		)
+		, (19,Plain $
+			let
+				targetspan = [(year,month,day)|year <- [1901..2000],month <- [0..11],day <- [1..(daysInMonth year month)]]
+				daystofirst = length . takeWhile (/=(1901,1,1)) $ [(year,month,day)|year <- [1900..],month <- [0..11],day <- [1..(daysInMonth year month)]]
+			in
+				fromIntegral . length . filter (\(_,_,day) -> day == 1) . map head . chunksOf 7 . drop (daystofirst `mod` 7) $ targetspan
 		)
 		-- TODO
 		, (30,Plain $
