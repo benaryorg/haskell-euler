@@ -194,6 +194,13 @@ functionList =
 			(+1) . fromIntegral . fromJust . findIndex (>=10^999) $ fibonacci
 		)
 		-- TODO
+		, (27,Plain $
+			let
+				formula = (\(a,b) n -> n^2+a*n+b)
+			in
+				(\(a,b) -> a*b) . fst . maximumBy (on compare snd) . map (\x -> (x,length . takeWhile (isPrime . formula x) $ [0..])) $ [(a,b)|a <- [-999..999],b <- [-1000..1000]]
+		)
+		-- TODO
 		, (30,Plain $
 			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
 		)
