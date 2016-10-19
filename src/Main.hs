@@ -57,8 +57,10 @@ isPrime = (==1) . length . primeFactor
 
 primeFactor :: Integral a => a -> [a]
 primeFactor 1 = []
-primeFactor x = f:(primeFactor (x `div` f))
-	where f = head $ filter ((==0) . mod x) $ (2:[3,5..])
+primeFactor x
+	| x <= 0 = []
+	| otherwise = f:(primeFactor (x `div` f))
+		where f = head $ filter ((==0) . mod x) $ (2:[3,5..])
 
 factor :: Integral a => a -> [a]
 factor n = nub $ concatMap (\x -> [div n x,x]) $ filter ((==0) . mod n) $ takeWhile ((<=n) . (^2)) [1..]
