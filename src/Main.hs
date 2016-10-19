@@ -184,6 +184,10 @@ functionList =
 				sum . filter reversefactorsum $ [2..9999]
 		)
 		-- TODO
+		, (24,Plain $
+			foldl (\a b -> a*10+b) 0 . head . drop 999999 . sort . permutations $ [0,1,2,3,4,5,6,7,8,9]
+		)
+		-- TODO
 		, (30,Plain $
 			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
 		)
