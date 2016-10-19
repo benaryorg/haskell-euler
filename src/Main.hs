@@ -176,6 +176,13 @@ functionList =
 		, (20,Plain $
 			sum . digitsDec . product $ [1..100]
 		)
+		, (21,Plain $
+			let
+				smallfactors = init . sort . factor
+				reversefactorsum x = let y = sum . smallfactors $ x in (&&) (y /= x) . (==x) . sum . smallfactors $ y
+			in
+				sum . filter reversefactorsum $ [2..9999]
+		)
 		-- TODO
 		, (30,Plain $
 			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
