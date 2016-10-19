@@ -1,10 +1,11 @@
 module Main where
 
 import Control.Monad
+import Data.Function
 import Data.Function.Memoize
 import Data.List
 import Data.List.Split
-import Data.Function
+import Data.Maybe
 import Math.NumberTheory.Primes.Sieve
 import System.Environment
 
@@ -186,6 +187,9 @@ functionList =
 		-- TODO
 		, (24,Plain $
 			foldl (\a b -> a*10+b) 0 . head . drop 999999 . sort . permutations $ [0,1,2,3,4,5,6,7,8,9]
+		)
+		, (25,Plain $
+			(+1) . fromIntegral . fromJust . findIndex (>=10^999) $ fibonacci
 		)
 		-- TODO
 		, (30,Plain $
