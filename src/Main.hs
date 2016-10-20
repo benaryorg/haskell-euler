@@ -265,6 +265,9 @@ functionList =
 		, (40,Plain $
 			(\l -> (l!!1)*(l!!10)*(l!!100)*(l!!1000)*(l!!10000)*(l!!100000)*(l!!1000000)) . (0:) . concatMap (reverse . digitsDec) $ [1..]
 		)
+		, (41,Plain $
+			last . filter ((\l -> l == [1..(fromIntegral $ length l)]) . sort . digitsDec) . takeWhile (<=999999999) $ primes
+		)
 		-- TODO
 		, (67,File "res/67.txt" $
 			let
