@@ -252,6 +252,15 @@ functionList =
 		, (36,Plain $
 			sum . filter isPalindromBin . filter isPalindromDec $ [1..999999]
 		)
+		, (37,Plain $
+			let
+				chopl [] = []
+				chopl l@(x:xs) = l:chopl xs
+				chopr [] = []
+				chopr l = l:(chopr $ init l)
+			in
+				sum . take 11 . filter (all (isPrime . foldr (\b a -> a*10+b) 0) . chopr . digitsDec) . filter (all (isPrime . foldr (\b a -> a*10+b) 0) . chopl . digitsDec) . drop 4 $ primes
+		)
 		-- TODO
 		, (67,File "res/67.txt" $
 			let
