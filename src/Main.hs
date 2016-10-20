@@ -201,6 +201,9 @@ functionList =
 				(\(a,b) -> a*b) . fst . maximumBy (on compare snd) . map (\x -> (x,length . takeWhile (isPrime . formula x) $ [0..])) $ [(a,b)|a <- [-999..999],b <- [-1000..1000]]
 		)
 		-- TODO
+		, (29,Plain $
+			fromIntegral . length . nub . map (uncurry (^)) $ [(a,b)|a <- [2..100],b <- [2..100]]
+		)
 		, (30,Plain $
 			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
 		)
