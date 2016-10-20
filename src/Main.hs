@@ -13,6 +13,9 @@ data Function = Plain (Integer)
 	| File String (String -> Integer)
 	| Text String
 
+rotations :: [a] -> [[a]]
+rotations l = unfoldr (\(len,l@(x:xs)) -> if len == 0 then Nothing else Just (l,(len-1,xs++[x]))) (length l,l)
+
 daysInMonth :: Integral a => a -> a -> a
 daysInMonth _ 0 = 31
 daysInMonth year 1
@@ -242,6 +245,9 @@ functionList =
 				numtosum = numtosum' 9
 			in
 				sum . take 4 . nub . map numtosum . filter ((\x -> (==x) . sum . map fact . digitsDec $ x) . numtosum) . filter ((>1) . length . filter (/=0)) $ nums
+		)
+		, (35,Plain $
+			fromIntegral . length . filter (all (isPrime . foldl (\a b -> a*10+b) 0)) . map (rotations . digitsDec) $ [2..999999]
 		)
 		-- TODO
 		, (67,File "res/67.txt" $
