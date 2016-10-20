@@ -233,6 +233,17 @@ functionList =
 				sum . nub . map (\(x,y,z) -> z) . filter correct . concat . map allequs . permutations $ [1..9]
 		)
 		-- TODO
+		, (34,Plain $
+			let
+				fact n = foldl (*) 1 [2..n]
+				nums = [[nine,eight,seven,six,five,four,three,two,one]|one <- [0..5],two <- [0..5],three <- [0..5],four <- [0..5],five <- [0..5],six <- [0..5],seven <- [0..5],eight <- [0..5],nine <- [0..5]]
+				numtosum' 0 _ = 0
+				numtosum' n (x:xs) = (fact n)*x+numtosum' (n-1) xs
+				numtosum = numtosum' 9
+			in
+				sum . take 4 . nub . map numtosum . filter ((\x -> (==x) . sum . map fact . digitsDec $ x) . numtosum) . filter ((>1) . length . filter (/=0)) $ nums
+		)
+		-- TODO
 		, (67,File "res/67.txt" $
 			let
 				matrix = reverse . map (map (read :: String -> Integer) . words) . lines
