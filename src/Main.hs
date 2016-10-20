@@ -262,6 +262,10 @@ functionList =
 				sum . take 11 . filter (all (isPrime . foldr (\b a -> a*10+b) 0) . chopr . digitsDec) . filter (all (isPrime . foldr (\b a -> a*10+b) 0) . chopl . digitsDec) . drop 4 $ primes
 		)
 		-- TODO
+		, (40,Plain $
+			(\l -> (l!!1)*(l!!10)*(l!!100)*(l!!1000)*(l!!10000)*(l!!100000)*(l!!1000000)) . (0:) . concatMap (reverse . digitsDec) $ [1..]
+		)
+		-- TODO
 		, (67,File "res/67.txt" $
 			let
 				matrix = reverse . map (map (read :: String -> Integer) . words) . lines
