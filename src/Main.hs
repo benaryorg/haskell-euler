@@ -249,6 +249,9 @@ functionList =
 		, (35,Plain $
 			fromIntegral . length . filter (all (isPrime . foldl (\a b -> a*10+b) 0)) . map (rotations . digitsDec) $ [2..999999]
 		)
+		, (36,Plain $
+			sum . filter isPalindromBin . filter isPalindromDec $ [1..999999]
+		)
 		-- TODO
 		, (67,File "res/67.txt" $
 			let
