@@ -207,6 +207,20 @@ functionList =
 		, (30,Plain $
 			sum . filter (\x -> x == (sum . map (^5) . digitsDec $ x)) $ [2..(354294*2)]
 		)
+		, (31,Plain $
+			let
+				split :: Integral a => [a] -> a -> [[a]]
+				split e@[] n = let c = 200 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
+				split e@[_] n = let c = 100 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
+				split e@[_,_] n = let c = 50 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
+				split e@[_,_,_] n = let c = 20 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
+				split e@[_,_,_,_] n = let c = 10 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
+				split e@[_,_,_,_,_] n = let c = 5 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
+				split e@[_,_,_,_,_,_] n = let c = 2 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
+				split e@[_,_,_,_,_,_,_] n = [(n:e)]
+			in
+				fromIntegral . length . nub $ split [] 200
+		)
 		-- TODO
 		, (67,File "res/67.txt" $
 			let
