@@ -56,7 +56,7 @@ fibonacci :: Integral a => [a]
 fibonacci = unfoldr (\(x,y) -> Just (x,(y,x+y))) (1,1)
 
 isPrime :: Integral a => a -> Bool
-isPrime = (==1) . length . primeFactor
+isPrime n = (==n) . head . dropWhile (<n) . map fromIntegral $ primes
 
 primeFactor :: Integral a => a -> [a]
 primeFactor 1 = []
