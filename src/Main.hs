@@ -221,6 +221,17 @@ functionList =
 			in
 				fromIntegral . length . nub $ split [] 200
 		)
+		, (32,Plain $
+			let
+				digtonum = foldl (\a b -> a*10+b) 0
+				firstsplit perm = map (\f -> f perm) (map splitAt [1..7])
+				secondsplit = map (\(x,l) -> map (\f -> (x,f l)) (map splitAt [1..((length l)-1)])) . firstsplit
+				allperms = map (\(x,(y,z)) -> (x,y,z)) . concat . secondsplit
+				allequs = map (\(x,y,z) -> (digtonum x,digtonum y,digtonum z)) . allperms
+				correct (x,y,z) = x*y == z
+			in
+				sum . nub . map (\(x,y,z) -> z) . filter correct . concat . map allequs . permutations $ [1..9]
+		)
 		-- TODO
 		, (67,File "res/67.txt" $
 			let
