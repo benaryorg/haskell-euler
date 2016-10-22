@@ -235,7 +235,16 @@ functionList =
 			in
 				sum . nub . map (\(x,y,z) -> z) . filter correct . concat . map allequs . permutations $ [1..9]
 		)
-		-- TODO
+		, (33,Plain $
+			let
+				equal (n1,d1) (n2,d2) = n1*d2 == n2*d1
+				digitize (n,d) = (digitsDec n,digitsDec d)
+				shorten = map snd . filter fst . (\([n1,n2],[d1,d2]) -> [(n1 == d1,(n2,d2)),(n1 == d2,(n2,d1)),(n2 == d1,(n1,d2)),(n2 == d2,(n1,d1))]) . digitize
+				divisible x = any (equal x) $ shorten x
+				numbers = filter divisible $ [(n,d)|n <- [10..99],d <- [10..99],n `mod` 10 /= 0,d `mod` 10 /= 0,n < d]
+			in
+				(\(n,d) -> d `div` (gcd n d)) . foldl1 (\(n1,d1) (n2,d2) -> (n1*n2,d1*d2)) $ numbers
+		)
 		, (34,Plain $
 			let
 				fact n = foldl (*) 1 [2..n]
