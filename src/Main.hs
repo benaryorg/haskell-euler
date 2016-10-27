@@ -6,6 +6,7 @@ import Data.Function.Memoize
 import Data.List
 import Data.List.Split
 import Data.Maybe
+import Data.Ratio
 import Math.NumberTheory.Primes.Sieve
 import System.Environment
 
@@ -276,6 +277,10 @@ functionList =
 		)
 		, (41,Plain $
 			last . filter ((\l -> l == [1..(fromIntegral $ length l)]) . sort . digitsDec) . takeWhile (<=999999999) $ primes
+		)
+		-- TODO
+		, (65,Plain $
+			sum . digitsDec . numerator . foldr1 (\x acc -> x + (toRational 1 / acc)) . (2:) . take 99 . concat $ [[1,2*n,1]|n <- [1..]]
 		)
 		-- TODO
 		, (67,File "res/67.txt" $
