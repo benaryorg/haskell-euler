@@ -279,6 +279,9 @@ functionList =
 			last . filter ((\l -> l == [1..(fromIntegral $ length l)]) . sort . digitsDec) . takeWhile (<=999999999) $ primes
 		)
 		-- TODO
+		, (56,Plain $
+			maximum . map (sum . digitsDec) $ [a^b|a <- [1..99],b <- [1..99]]
+		)
 		, (57,Plain $
 			let
 				nummoredigs x = (length $ digitsDec $ numerator x) > (length $ digitsDec $ denominator x)
