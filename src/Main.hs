@@ -279,6 +279,15 @@ functionList =
 			last . filter ((\l -> l == [1..(fromIntegral $ length l)]) . sort . digitsDec) . takeWhile (<=999999999) $ primes
 		)
 		-- TODO
+		, (55,Plain $
+			let
+				revadd x = (+x) . foldl (\acc x -> acc*10+x) 0 . digitsDec $ x
+				lychrel 0 _ = True
+				lychrel 50 x = lychrel 49 $ revadd x
+				lychrel n x = if isPalindromDec x then False else lychrel (n-1) $ revadd x
+			in
+				fromIntegral . length . filter (lychrel 50) $ [1..9999]
+		)
 		, (56,Plain $
 			maximum . map (sum . digitsDec) $ [a^b|a <- [1..99],b <- [1..99]]
 		)
