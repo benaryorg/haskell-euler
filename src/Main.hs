@@ -279,6 +279,13 @@ functionList =
 			last . filter ((\l -> l == [1..(fromIntegral $ length l)]) . sort . digitsDec) . takeWhile (<=999999999) $ primes
 		)
 		-- TODO
+		, (57,Plain $
+			let
+				nummoredigs x = (length $ digitsDec $ numerator x) > (length $ digitsDec $ denominator x)
+			in
+				fromIntegral . length . filter nummoredigs . drop 1 . map (+ (-1)) . scanl1 (\acc x -> x + (toRational 1 / acc)) . take 999 $ repeat 2
+		)
+		-- TODO
 		, (65,Plain $
 			sum . digitsDec . numerator . foldr1 (\x acc -> x + (toRational 1 / acc)) . (2:) . take 99 . concat $ [[1,2*n,1]|n <- [1..]]
 		)
