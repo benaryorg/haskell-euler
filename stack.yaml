@@ -44,6 +44,9 @@ extra-deps: [memoize-0.8.1]
 # Override default flag values for local packages and extra-deps
 flags: {}
 
+ghc-options:
+    "*": -Wall -Wextra -Wno-tabs -Wno-type-defaults
+
 # Extra package databases containing global packages
 extra-package-dbs: []
 
