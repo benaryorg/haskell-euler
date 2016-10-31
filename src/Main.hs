@@ -1,6 +1,5 @@
 module Main where
 
-import Control.Monad
 import Data.Function
 import Data.Function.Memoize
 import Data.List
@@ -15,7 +14,7 @@ data Function = Plain (Integer)
 	| Text String
 
 rotations :: [a] -> [[a]]
-rotations l = unfoldr (\(len,l@(x:xs)) -> if len == 0 then Nothing else Just (l,(len-1,xs++[x]))) (length l,l)
+rotations list = unfoldr (\(len,l@(x:xs)) -> if len == 0 then Nothing else Just (l,(len-1,xs++[x]))) (length list,list)
 
 daysInMonth :: Integral a => a -> a -> a
 daysInMonth _ 0 = 31
@@ -32,20 +31,21 @@ daysInMonth _ 8 = 30
 daysInMonth _ 9 = 31
 daysInMonth _ 10 = 30
 daysInMonth _ 11 = 31
+daysInMonth _ _ = error "daysInMonth: unknown month"
 
 collatz :: Integral a => a -> [a]
 collatz 1 = [1]
 collatz n = n:collatz next
 	where next
 		| even n = n `div` 2
-		| odd n = 3*n+1
+		| otherwise = 3*n+1
 
 lattice :: (Integer,Integer) -> Integer
 lattice = (+1) . (`div` 2) . memoFix lat
 	where
 		lat :: ((Integer,Integer) -> Integer) -> (Integer,Integer) -> Integer
-		lat self (x,0) = 0
-		lat self (0,y) = 0
+		lat _ (_,0) = 0
+		lat _ (0,_) = 0
 		lat self (x,y) = 2+self (norm (x-1,y))+self (norm (x,y-1))
 		norm :: (Integer,Integer) -> (Integer,Integer)
 		norm (a,b) = (min a b,max a b)
@@ -75,18 +75,26 @@ isPalindrom base number = (take len dig) == (take len (reverse dig))
 		dig = digits base number
 		len = div (length dig) 2
 
+isPalindromBin :: Integral a => a -> Bool
 isPalindromBin = isPalindrom 2
+isPalindromOct :: Integral a => a -> Bool
 isPalindromOct = isPalindrom 8
+isPalindromDec :: Integral a => a -> Bool
 isPalindromDec = isPalindrom 10
+isPalindromHex :: Integral a => a -> Bool
 isPalindromHex = isPalindrom 16
 
 digits :: Integral a => a -> a -> [a]
-digits base 0 = []
+digits _ 0 = []
 digits base number = (number `mod` base):(digits base $ number `div` base)
 
+digitsBin :: Integral a => a -> [a]
 digitsBin = digits 2
+digitsOct :: Integral a => a -> [a]
 digitsOct = digits 8
+digitsDec :: Integral a => a -> [a]
 digitsDec = digits 10
+digitsHex :: Integral a => a -> [a]
 digitsHex = digits 16
 
 applyAll :: [a -> b] -> ([b] -> c) -> a -> c
@@ -138,7 +146,7 @@ functionList =
 					mlen = length matrix
 					horizontal = maximum . map (maximum . map (foldl (*) 1) . divvy 4 1)
 					baseindices = concat [[(0,i),(i,0)]|i <- [0..(mlen-1)]]
-					diagonalindices = map (\(x,y) -> filter (\(x,y) -> x < 20 && y < 20) $ [(x+i,y+i)|i <- [0..(mlen-1)]]) baseindices :: [[(Int,Int)]]
+					diagonalindices = map (\(x,y) -> filter (uncurry $ on (&&) (<20)) $ [(x+i,y+i)|i <- [0..(mlen-1)]]) baseindices :: [[(Int,Int)]]
 					diagonalvalues = \m -> map (map (\(x,y) -> (m!!y)!!x)) diagonalindices
 					diagonal = maximum . map (foldl (*) 1) . concat . map (divvy 4 1) . diagonalvalues
 				in
@@ -213,17 +221,18 @@ functionList =
 		)
 		, (31,Plain $
 			let
-				split :: Integral a => [a] -> a -> [[a]]
-				split e@[] n = let c = 200 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
-				split e@[_] n = let c = 100 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
-				split e@[_,_] n = let c = 50 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
-				split e@[_,_,_] n = let c = 20 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
-				split e@[_,_,_,_] n = let c = 10 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
-				split e@[_,_,_,_,_] n = let c = 5 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
-				split e@[_,_,_,_,_,_] n = let c = 2 in concat $ map (\x -> split (x:e) (n-(x*c))) [0..(n `div` c)]
-				split e@[_,_,_,_,_,_,_] n = [(n:e)]
+				coins :: Integral a => [a] -> a -> [[a]]
+				coins e@[] n = let c = 200 in concat $ map (\x -> coins (x:e) (n-(x*c))) [0..(n `div` c)]
+				coins e@[_] n = let c = 100 in concat $ map (\x -> coins (x:e) (n-(x*c))) [0..(n `div` c)]
+				coins e@[_,_] n = let c = 50 in concat $ map (\x -> coins (x:e) (n-(x*c))) [0..(n `div` c)]
+				coins e@[_,_,_] n = let c = 20 in concat $ map (\x -> coins (x:e) (n-(x*c))) [0..(n `div` c)]
+				coins e@[_,_,_,_] n = let c = 10 in concat $ map (\x -> coins (x:e) (n-(x*c))) [0..(n `div` c)]
+				coins e@[_,_,_,_,_] n = let c = 5 in concat $ map (\x -> coins (x:e) (n-(x*c))) [0..(n `div` c)]
+				coins e@[_,_,_,_,_,_] n = let c = 2 in concat $ map (\x -> coins (x:e) (n-(x*c))) [0..(n `div` c)]
+				coins e@[_,_,_,_,_,_,_] n = [(n:e)]
+				coins _ _ = error "31: coins: list too long"
 			in
-				fromIntegral . length . nub $ split [] 200
+				fromIntegral . length . nub $ coins [] 200
 		)
 		, (32,Plain $
 			let
@@ -234,7 +243,7 @@ functionList =
 				allequs = map (\(x,y,z) -> (digtonum x,digtonum y,digtonum z)) . allperms
 				correct (x,y,z) = x*y == z
 			in
-				sum . nub . map (\(x,y,z) -> z) . filter correct . concat . map allequs . permutations $ [1..9]
+				sum . nub . map (\(_,_,z) -> z) . filter correct . concat . map allequs . permutations $ [1..9]
 		)
 		, (33,Plain $
 			let
@@ -252,6 +261,7 @@ functionList =
 				nums = [[nine,eight,seven,six,five,four,three,two,one]|one <- [0..5],two <- [0..5],three <- [0..5],four <- [0..5],five <- [0..5],six <- [0..5],seven <- [0..5],eight <- [0..5],nine <- [0..5]]
 				numtosum' 0 _ = 0
 				numtosum' n (x:xs) = (fact n)*x+numtosum' (n-1) xs
+				numtosum' _ [] = error "34: numtosum': empty list"
 				numtosum = numtosum' 9
 			in
 				sum . take 4 . nub . map numtosum . filter ((\x -> (==x) . sum . map fact . digitsDec $ x) . numtosum) . filter ((>1) . length . filter (/=0)) $ nums
@@ -265,7 +275,7 @@ functionList =
 		, (37,Plain $
 			let
 				chopl [] = []
-				chopl l@(x:xs) = l:chopl xs
+				chopl l@(_:xs) = l:chopl xs
 				chopr [] = []
 				chopr l = l:(chopr $ init l)
 			in
@@ -281,7 +291,7 @@ functionList =
 		-- TODO
 		, (55,Plain $
 			let
-				revadd x = (+x) . foldl (\acc x -> acc*10+x) 0 . digitsDec $ x
+				revadd n = (+n) . foldl (\acc x -> acc*10+x) 0 . digitsDec $ n
 				lychrel 0 _ = True
 				lychrel 50 x = lychrel 49 $ revadd x
 				lychrel n x = if isPalindromDec x then False else lychrel (n-1) $ revadd x
