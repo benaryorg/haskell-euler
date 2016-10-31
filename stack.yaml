@@ -45,7 +45,7 @@ extra-deps: [memoize-0.8.1]
 flags: {}
 
 ghc-options:
-    "*": -Wall -Wextra -Wno-tabs -Wno-type-defaults -Werror
+    "euler": -Wall -Wextra -Wno-tabs -Wno-type-defaults -Werror
 
 # Extra package databases containing global packages
 extra-package-dbs: []
